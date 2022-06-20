@@ -10,7 +10,7 @@ def plus(a, b):
 print(plus(12, 1.2))
 
 def age_check(age):
-  print(f"you ar {age}")
+  print(f"you are {age}")
   if age < 18:
     print("you cant drink")
   elif age == 18:
