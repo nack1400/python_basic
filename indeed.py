@@ -23,10 +23,13 @@ def get_last_page():
 def extract_job(html):
     title = html.find("div", {"class": "title"}).find("a")["title"]
     company = html.find("span", {"class": "company"})
-    if company.find("a") is not None:
-        company = str(company.find("a").string)
+    if company:
+      if company.find("a") is not None:
+          company = str(company.find("a").string)
+      else:
+          company = str(company.string)
     else:
-        company = str(company.string)
+      company = None
     company = company.strip()
     location = html.find("span", {"class": "recJobLoc"})["data-rc-loc"]
     job_id = html["data-jk"]
