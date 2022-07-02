@@ -1,3 +1,4 @@
+from reprlib import recursive_repr
 from sys import last_type
 import requests
 from bs4 import BeautifulSoup
@@ -13,6 +14,14 @@ def get_last_page():
     return last_page
 
 
+def extract_job(html):
+    title = html.find("div", {"class": "-title"}).find("h2").find("a")["title"]
+    company, location = html.find(
+        "div", {"class": "-company"}).find_all("span", recursive=False)
+    print(company.get_text(strip=True), location.get_text(strip=True))
+    return {"title": title}
+
+
 def extract_jobs(last_page):
     jobs = []
     for page in range(last_page):
@@ -20,7 +29,7 @@ def extract_jobs(last_page):
         soup = BeautifulSoup(result.text, "html.parser")
         result = soup.ffind_all("div", {"class": "-job"})
         for result in results:
-          print(result["data-jobid"])
+            print(result["data-jobid"])
 
 
 def get_jobs():
