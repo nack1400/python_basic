@@ -20,19 +20,24 @@ def extract_job(html):
         "div", {"class": "-company"}).find_all("span", recursive=False)
     company = company.get_text(strip=True)
     location = location.get_text(strip=True).strip("-").strip("\r").strip("\n")
-    return {"title": title, 'company': company, "location": location}
+    job_id = html['data-jobid']
+    return {"title": title, 'company': company, "location": location, "apply_link": f"https://stackoverflow.com/jobs/companies/{job_id}"}
 
 
 def extract_jobs(last_page):
     jobs = []
     for page in range(last_page):
+        print(f"Scrapping SO: page: {page}")
         result = requests.get(f"{URL}&pg={page+1}")
         soup = BeautifulSoup(result.text, "html.parser")
-        result = soup.ffind_all("div", {"class": "-job"})
+        results = soup.ffind_all("div", {"class": "-job"})
         for result in results:
-            print(result["data-jobid"])
+            job = extract_job(result)
+            jobs.append(job)
+    return jobs
 
 
 def get_jobs():
     last_page = get_last_page()
-    return []
+    jobs = extract_jobs(last_page)
+    return jobs
