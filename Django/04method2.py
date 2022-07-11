@@ -19,9 +19,22 @@ class Car():
 
 # print(dir(Car))
 
+# 상속
+class Convertible(Car):
 
-porche = Car(color="green", price="$40")
-print(porche.color, porche.price)
+    def __init__(self, **kwargs):
+      super().__init__()
+      self.time = kwargs.get("time", 10)
 
-mini = Car()
-print(mini.color, mini.price)
+    def take_off(self):
+      return "taking off"
+
+    def __str__(self):
+        return f"Car with no roof"
+
+porche = Convertible(color="green", price="$40")
+# print(porche.color, porche.price)
+# mini = Car()
+# print(mini.color, mini.price)
+porche.take_off()
+porche.wheels
